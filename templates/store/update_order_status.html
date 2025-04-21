@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Update Order Status{% endblock %}
+
+{% block content %}
+<style>
+    h2.title {
+        margin-right: 0;
+    }
+</style>
+
+<div class="col-sm-12 padding-right py-5">
+    <div class="vendor-dashboard">
+        <h2 class="title text-center">Update Order #{{ order.id }} Status</h2>
+
+        <!-- Status Update Form -->
+        <form method="POST" class="my-4 mx-auto" style="max-width: 600px;">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-control">
+                    {% for key, value in order.STATUS_CHOICES %}
+                        <option value="{{ key }}" {% if key == order.status %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success">Update</button>
+                <a href="{% url 'store:vender_dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        {% if order.status == 'cancelled' %}
+        <div class="alert alert-warning mt-4 text-center" style="max-width: 600px; margin: 0 auto;">
+            This order is <strong>cancelled</strong>. Stock has been restored.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

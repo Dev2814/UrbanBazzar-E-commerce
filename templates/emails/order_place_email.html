@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <p>Dear {{ firstname }},</p>
+
+    <p>Thank you for your order! 🛒✔️</p>
+
+    <p>
+      We're excited to let you know that your order has been successfully placed
+      at <b>UrbanBazzar</b>. 🎉 We are working on processing it and will notify you as soon as it's on its way.
+    </p>
+
+    <p><b>Order Details:</b></p>
+    <ul>
+      <li><b>Order Number:</b> {{ order_number }}</li>
+      <li><b>Total Amount:</b> ₹{{ total_amount }}</li>
+      <li><b>Shipping Address:</b> {{ shipping_address }}</li>
+      <li><b>Payment Method:</b> {{ payment_method }}</li>
+    </ul>
+
+    <p>If you need to make any changes or have any questions about your order, please reach out to us:</p>
+    <ul>
+      <li>
+        📧 Contact Support:
+        <a href="mailto:{{ support_email }}">{{ support_email }}</a>
+      </li>
+      <li>
+        📖 Visit Help Center:
+        <a href="{{ help_center_url }}">UrbanBazzar Help Center</a>
+      </li>
+    </ul>
+
+    <p>Thank you for shopping with us! We can't wait to deliver your order. 🚚💨</p>
+
+    <p>
+      Best Regards,<br />
+      <b>The UrbanBazzar Team</b>
+    </p>
+  </body>
+</html>

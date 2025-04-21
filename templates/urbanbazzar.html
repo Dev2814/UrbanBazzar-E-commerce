@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home | UrbanBazzar{% endblock %}
+{% block content %}
+
+<style>
+  h2.title {
+    margin-right: 0;
+  }
+</style>
+
+<div class="col-sm-12 padding-right">
+  <!-- Recommended Products Slider -->
+  <div class="features-items">
+    <h2 class="title text-center">Features Items</h2>
+    <div style="position: relative;">
+      <button class="slide-btn left-btn">&#10094;</button>
+      <button class="slide-btn right-btn">&#10095;</button>
+
+      <div class="slider-container">
+        <div class="slider-row">
+          {% for product in recommended_products %}
+          <div class="product-slide">
+            <div class="product-image-wrapper">
+              <div class="single-products">
+                <div class="productinfo text-center">
+                  {% if product.images.all %}
+                  <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="img-responsive product-image" />
+                  {% else %}
+                  <img src="{% static 'images/default_product.jpg' %}" alt="No Image" class="img-responsive product-image" />
+                  {% endif %}
+                  <h2>&#8377;{{ product.price }}</h2>
+                  
+                  <p>
+                    <a href="{% url 'store:product_detail' product.id %}" style="text-decoration: none; color: #696763;">
+                      <h5 style =  "text-decoration: none;color: #696763;margin-right: 50px;">{{ product.brand_name }}</h5>
+                      {{ product.name }}
+                    </a>
+                  </p>
+                  {% if product.stock == 0 %}
+                  <p style="color: red;">OUT OF STOCK</p>
+                  {% else %}
+                  <form method="post" class="add-to-cart-form" data-url="{% url 'cart:add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                      <button type="submit" class="btn btn-default add-to-cart">
+                        <i class="fa fa-shopping-cart"></i> Add to cart
+                      </button>
+                    {% else %}
+                      <button type="button" onclick="window.location.href='{% url 'users:Login_user' %}'" class="btn btn-default add-to-cart">
+                        <i class="fa fa-shopping-cart"></i> Add to cart
+                      </button>
+                    {% endif %}
+                  </form>                  
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <p class="text-center">No recommendations right now.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="category-tab">
+    <div class="col-sm-12">
+      <ul class="nav nav-tabs">
+        {% for category in categories|slice:":6" %}
+        <li class="{% if forloop.first %}active{% endif %}">
+          <a href="#category-{{ category.id }}" data-toggle="tab">{{ category.name }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="tab-content">
+      {% for category in categories %}
+      <div class="tab-pane fade {% if forloop.first %}active in{% endif %}" id="category-{{ category.id }}">
+        <div style="position: relative;">
+          <button class="cat-slide-btn cat-left-btn">&#10094;</button>
+          <button class="cat-slide-btn cat-right-btn">&#10095;</button>
+          <div class="slider-container">
+            <div class="slider-row category-slider-{{ category.id }}">
+              {% for product in category.product_set.all %}
+              <div class="product-slide">
+                <div class="product-image-wrapper">
+                  <div class="single-products">
+                    <div class="productinfo text-center">
+                      {% if product.images.all %}
+                      <a href="{% url 'store:product_detail' product.id %}" style="text-decoration: none; color: #696763;">
+                        <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="product-image" />
+                      </a>
+                      {% else %}
+                      <a href="{% url 'store:product_detail' product.id %}" style="text-decoration: none; color: #696763;">
+                        <img src="{% static 'images/default_product.jpg' %}" alt="{{ product.name }}" class="product-image" />
+                      </a>
+                      {% endif %}
+                      <h2>&#8377;{{ product.price }}</h2>
+                      <p>
+                        <a href="{% url 'store:product_detail' product.id %}" style="text-decoration: none; color: #696763;">
+                          <h5 style =  "text-decoration: none;color: #696763;margin-right: 50px;">{{ product.brand_name }}</h5>
+                          {{ product.name }}
+                        </a>
+                      </p>
+                      {% if product.stock == 0 %}
+                      <p style="color: red;">OUT OF STOCK</p>
+                      {% else %}
+                      <form method="post" class="add-to-cart-form" data-url="{% url 'cart:add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+                          <button type="submit" class="btn btn-default add-to-cart">
+                            <i class="fa fa-shopping-cart"></i> Add to cart
+                          </button>
+                        {% else %}
+                          <button type="button" onclick="window.location.href='{% url 'users:Login_user' %}'" class="btn btn-default add-to-cart">
+                            <i class="fa fa-shopping-cart"></i> Add to cart
+                          </button>
+                        {% endif %}
+                      </form> 
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <p class="text-center">No products available in this category.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

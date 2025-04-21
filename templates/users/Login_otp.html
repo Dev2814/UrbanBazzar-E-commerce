@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="{% static 'css/Login_otp.css' %}" />
+  </head>
+  <body>
+    <!-- Popup Container -->
+    <div class="popup-container" id="popupContainer">
+        {% for message in messages %}
+            <div class="popup {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    <div id="content" class="Login">
+      <header>
+        <img
+          src="{% static 'images/UrbanBazzarWhite.png' %}"
+          class="logo"
+          alt="Logo"
+        />
+      </header>
+      <h2>OTP Verification</h2>
+      <form id="otpForm" method="POST">
+        {% csrf_token %}
+        <div class="input-field">
+          <input type="text" maxlength="1" id="otp1" name="otp1" />
+          <input type="text" maxlength="1" id="otp2" name="otp2" />
+          <input type="text" maxlength="1" id="otp3" name="otp3" />
+          <input type="text" maxlength="1" id="otp4" name="otp4" />
+          <input type="text" maxlength="1" id="otp5" name="otp5" />
+          <input type="text" maxlength="1" id="otp6" name="otp6" />
+        </div>
+        <button type="submit" class="btn">Verify OTP</button>
+      </form>
+      <p>Don't Have an OTP? <a href="{% url "users:Resend_otp" %}">Resend OTP</a></p>
+    </div>
+    <script src="{% static 'js/Login_otp.js' %}"></script>
+  </body>
+</html>

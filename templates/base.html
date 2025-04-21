@@ -1,0 +1,572 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="UrbanBazzar E-commerce Platform" />
+    <meta name="author" content="UrbanBazzar Team" />
+    
+    <title>{% block title %}Home | UrbanBazzar{% endblock %}</title>
+
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}?v=2.2" />
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}?v=2.2" />
+    <link rel="stylesheet" href="{% static 'css/prettyPhoto.css' %}?v=2.2" />
+    <link rel="stylesheet" href="{% static 'css/price-range.css' %}?v=2.2" />
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}?v=2.2" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=2.2" />
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}?v=2.2" />    
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon_white/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon_white/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon_white/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon_white/site.webmanifest' %}">
+    <link rel="icon" href="{% static 'favicon_white/favicon.ico' %}">
+
+
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <!-- Popup Container -->
+    <div class="popup-container" id="popupContainer">
+      {% for message in messages %}
+          <div class="popup {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+
+    <header id="header">
+      <!--header-->
+      <div class="header-middle">
+        <!--header-middle-->
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="logo pull-left">
+                <a href="{% url "home" %}"
+                  ><img
+                    class="logo"
+                    src="{% static 'images/UrbanBazzarWhite.png' %}"
+                    alt="UrbanBazzar Logo"
+                /></a>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="shop-menu pull-right">
+                <ul class="nav navbar-nav">
+                  <li>
+                    {% if user.is_authenticated %}
+                    <a href="#" data-toggle="modal" data-target="#checkoutModal">
+                      <i class="fa fa-crosshairs"></i> Checkout
+                    </a>
+                    {% else %}
+                    <a href="{% url "users:Login_user" %}">
+                      <i class="fa fa-crosshairs"></i> Checkout
+                    </a>
+                    {% endif %}                 
+                  </li>
+                  <li>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'cart:view_cart' %}"><i class="fa fa-shopping-cart"></i> Cart</a>
+                    {% else %}
+                    <a href="{% url 'users:Login_user' %}"><i class="fa fa-shopping-cart"></i> Cart</a>
+                    {% endif %}
+                  </li>
+                  <li>
+                    {% if user.is_authenticated %}
+                    <li class="dropdown">
+                      <a href="#"><i class="fa fa-user"></i>{{user.username}}<i class="fa fa-angle-down"></i></a>
+                      <ul role="menu" class="sub-menu">
+                        <li><a href="#">Profile</a></li>
+                        {% if user.role == "vendor" %}
+                          <li><a href="{% url 'store:vender_dashboard' %}">Add-Products</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'orders:order_list' %}">Orders</a></li>
+                        <li><a href="{% url 'users:logout_user' %}">Logout</a></li>
+                      </ul>
+                    </li>
+                    {% else %}
+                      <a href="{% url 'users:Login_user' %}">
+                        <i class="fa fa-lock"></i> Login
+                      </a>
+                    {% endif %}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/header-middle-->
+
+      <div class="header-bottom">
+        <!--header-bottom-->
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-9">
+              <div class="navbar-header">
+                <button
+                  type="button"
+                  class="navbar-toggle"
+                  data-toggle="collapse"
+                  data-target=".navbar-collapse"
+                >
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+              </div>
+              <div class="mainmenu pull-left">
+                <ul class="nav navbar-nav collapse navbar-collapse">
+                  <li><a href="{% url 'home' %}" class="active">Home</a></li>
+                  <li class="dropdown">
+                    <a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                    <ul role="menu" class="sub-menu">
+                      <li><a href="{% url 'store:product_list' %}">Products</a></li>
+                      <li>
+                        {% if user.is_authenticated %}
+                          <a href="#" data-toggle="modal" data-target="#checkoutModal">Checkout</a>
+                        {% else %}
+                          <a href="{% url "users:Login_user" %}">Checkout</a>
+                        {% endif %}
+                      </li>
+                      <li>
+                        {% if user.is_authenticated %}
+                          <a href="{% url 'cart:view_cart' %}">Cart</a>
+                        {% else %}
+                        <a href="{% url 'users:Login_user' %}">Cart</a>
+                        {% endif %}
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a href="{% url "About_Us" %}">About US</a></li>
+                  <li><a href="{% url "Contact_us" %}">Contact</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="search_box pull-right">
+                <form method="GET" action="{% url 'store:product_list' %}">
+                  <input type="text" name="q" placeholder="Search products..." value="{{ request.GET.q|default:'' }}" />
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/header-bottom-->
+      </header>
+      <!--/header-->
+      
+      <section>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="left-sidebar">
+                <h2>Category</h2>
+                <div class="panel-group category-products" id="accordian">
+                  <!--category-productsr-->
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
+                          <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                          Sportswear
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="sportswear" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <ul>
+                          <li><a href="{% url 'store:product_list' %}?q=Nike">Nike </a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Under Armour">Under Armour </a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Adidas">Adidas </a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Puma">Puma</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=ASICS">ASICS </a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordian" href="#mens">
+                          <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                          Mens
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="mens" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <ul>
+                          <li><a href="{% url 'store:product_list' %}?q=Fendi">Fendi</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Guess">Guess</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Valentino">Valentino</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Dior">Dior</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Versace">Versace</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Armani">Armani</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Prada">Prada</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Dolce and Gabbana">Dolce and Gabbana</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Chanel">Chanel</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Gucci">Gucci</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Jompers">Jompers</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+      
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordian" href="#womens">
+                          <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                          Womens
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="womens" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <ul>
+                          <li><a href="{% url 'store:product_list' %}?q=Fendi">Fendi</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Guess">Guess</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Valentino">Valentino</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Dior">Dior</a></li>
+                          <li><a href="{% url 'store:product_list' %}?q=Versace">Versace</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"><a href="{% url 'store:product_list' %}?q=Kids">Kids</a></h4>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"><a href="{% url 'store:product_list' %}?q=Fashion">Fashion</a></h4>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"><a href="{% url 'store:product_list' %}?q=Households">Households</a></h4>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"><a href="{% url 'store:product_list' %}?q=Interiors">Interiors</a></h4>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"><a href="{% url 'store:product_list' %}?q=Clothing">Clothing</a></h4>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"><a href="{% url 'store:product_list' %}?q=Bags">Bags</a></h4>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title"><a href="{% url 'store:product_list' %}?q=Shoes">Shoes</a></h4>
+                    </div>
+                  </div>
+                </div>
+                <!--/category-products-->
+              </div>
+            </div>
+            <div class="col-sm-9">{% block content %}{% endblock %}</div>
+          </div>
+        </div>
+      </section>
+      
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <form method="POST" action="{% url 'orders:confirm_order' %}">
+                  {% csrf_token %}
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 class="modal-title" id="checkoutModalLabel">Checkout</h4>
+                  </div>
+                  <div class="modal-body">
+  
+                      {% if user_addresses or user_secondary_addresses %}
+                          <div class="form-group">
+                              <label for="selected_address">Select Shipping Address</label>
+  
+                              {% if user_addresses %}
+                                  <h5>Primary Address</h5>
+                                  {% for address in user_addresses %}
+                                      <div class="form-check" onclick="document.getElementById('address{{ address.id }}').checked = true;" style="cursor: pointer;">
+                                          <input class="form-check-input" type="radio" name="selected_address" id="address{{ address.id }}" value="{{ address.id }}" required>
+                                          <label class="form-check-label" for="address{{ address.id }}">
+                                              {{ address.address }}, {{ address.city }} - {{ address.pincode }}<br>
+                                              {{ address.country }} | Phone: {{ address.mobile }}
+                                          </label>
+                                      </div>
+                                  {% endfor %}
+                              {% endif %}
+  
+                              {% if user_secondary_addresses %}
+                                  <h5>Secondary Address</h5>
+                                  {% for address in user_secondary_addresses %}
+                                      <div class="form-check" onclick="document.getElementById('secondary_address{{ address.id }}').checked = true;" style="cursor: pointer;">
+                                          <input class="form-check-input" type="radio" name="selected_address" id="secondary_address{{ address.id }}" value="{{ address.id }}" required>
+                                          <label class="form-check-label" for="secondary_address{{ address.id }}">
+                                              {{ address.address }}, {{ address.city }} - {{ address.pincode }}<br>
+                                              {{ address.country }} | Phone: {{ address.mobile }}
+                                          </label>
+                                      </div>
+                                  {% endfor %}
+                              {% endif %}
+                          </div>
+  
+                      {% else %}
+                          <p class="text-danger">No address found. Please add your address before proceeding.</p>
+                          <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#addPrimaryAddressModal">
+                            <i class="fa fa-plus"></i> Add Address
+                        </button>
+                      {% endif %}
+  
+                      <div class="form-group mt-3">
+                          <label>Payment Method</label><br>
+                          <label class="radio-inline">
+                              <input type="radio" name="payment_method" value="COD" checked> Cash on Delivery (COD)
+                          </label>
+                          <label class="radio-inline">
+                              <input type="radio" name="payment_method" value="UPI" id="upiRadio"> UPI
+                          </label>
+                          <input type="text" name="upi_id" id="upiInput" class="form-control" placeholder="Enter UPI ID" style="display: none; margin-top: 10px;">
+                      </div>
+  
+                      {% if show_add_address_button %}
+                          <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#addSecondaryAddressModal">
+                              <i class="fa fa-plus"></i> Add Another Address
+                          </button>
+                      {% endif %}
+  
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Confirm Order</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+    </div>  
+
+    <!-- Primary Address Modal -->
+    <div class="modal fade" id="addPrimaryAddressModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form method="POST" action="{% url 'users:add_primary_address' %}" id="addressForm">
+            {% csrf_token %}
+            <div class="modal-header">
+              <h5 class="modal-title">Add Address</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="is_secondary" id="is_secondary" value="false"> <!-- Default to primary address -->
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" required>
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" name="city" required>
+              </div>
+              <div class="form-group">
+                <label for="pincode">Pincode</label>
+                <input type="text" class="form-control" id="pincode" name="pincode" required>
+              </div>
+              <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" name="country" required>
+              </div>
+              <div class="form-group">
+                <label for="mobile">Mobile</label>
+                <input type="text" class="form-control" id="mobile" name="mobile" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save Address</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Address Modal -->
+    <div class="modal fade" id="addSecondaryAddressModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form method="POST" action="{% url 'users:add_secondary_address' %}" id="addressForm">
+            {% csrf_token %}
+            <div class="modal-header">
+              <h5 class="modal-title">Add Address</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="is_secondary" id="is_secondary" value="false"> <!-- Default to primary address -->
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" required>
+              </div>
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" name="city" required>
+              </div>
+              <div class="form-group">
+                <label for="pincode">Pincode</label>
+                <input type="text" class="form-control" id="pincode" name="pincode" required>
+              </div>
+              <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" name="country" required>
+              </div>
+              <div class="form-group">
+                <label for="mobile">Mobile</label>
+                <input type="text" class="form-control" id="mobile" name="mobile" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save Address</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <footer id="footer">
+      <!--Footer-->
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-2">
+              <div class="companyinfo">
+                <h2><span>UrBan</span>Bzzar</h2>
+                <p>
+                  Browse through our diverse range of meticulously crafted
+                  garments, designed to bring out your individuality and cater
+                  to your sense of style
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-widget">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-2">
+              <div class="single-widget">
+                <h2>Service</h2>
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="#">Online Help</a></li>
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">Order Status</a></li>
+                  <li><a href="#">Change Location</a></li>
+                  <li><a href="#">FAQ's</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="single-widget">
+                <h2>Quock Shop</h2>
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="#">T-Shirt</a></li>
+                  <li><a href="#">Mens</a></li>
+                  <li><a href="#">Womens</a></li>
+                  <li><a href="#">Gift Cards</a></li>
+                  <li><a href="#">Shoes</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="single-widget">
+                <h2>Policies</h2>
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="#">Terms of Use</a></li>
+                  <li><a href="#">Privecy Policy</a></li>
+                  <li><a href="#">Refund Policy</a></li>
+                  <li><a href="#">Billing System</a></li>
+                  <li><a href="#">Ticket System</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="single-widget">
+                <h2>About URBANBAZZAR</h2>
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="#">Company Information</a></li>
+                  <li><a href="#">Careers</a></li>
+                  <li><a href="#">Store Location</a></li>
+                  <li><a href="#">Affillate Program</a></li>
+                  <li><a href="#">Copyright</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-3 col-sm-offset-1">
+              <div class="single-widget">
+                <h2>About URBANBAZZAR</h2>
+                <form action="#" class="searchform">
+                  <input type="text" placeholder="Your email address" />
+                  <button type="submit" class="btn btn-default">
+                    <i class="fa fa-arrow-circle-o-right"></i>
+                  </button>
+                  <p>
+                    Get the most recent updates from <br />our site and be
+                    updated your self...
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <p class="pull-left">
+              Copyright © 2025 UrbanBazzar Inc. All rights reserved.
+            </p>
+            <p class="pull-right">
+              Designed by
+              <span
+                ><a target="_blank" href="{% url "home" %}"
+                  >Dev</a
+                ></span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!--/Footer-->
+
+    
+  <!-- JS Files -->
+  <script src="{% static 'js/jquery.js' %}?v=2.2"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}?v=2.2"></script>
+  <script src="{% static 'js/jquery.scrollUp.min.js' %}?v=2.2" defer></script>
+  <script src="{% static 'js/price-range.js' %}?v=2.2" defer></script>
+  <script src="{% static 'js/jquery.prettyPhoto.js' %}?v=2.2" defer></script>
+  <script src="{% static 'js/main.js' %}?v=2.2" defer></script>
+
+  {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

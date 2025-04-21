@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", "sans-serif";
+}
+
+body {
+  background: #f0efef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.Login {
+  background: #fff;
+  padding: 30px 120px;
+  box-shadow: inset;
+  width: 550px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.logo {
+  width: 100px;
+  margin: 100px;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Login header {
+  width: 65px;
+  height: 65px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.Login header:hover {
+  transform: scale(1.5);
+}
+
+.Login h2 {
+  margin: 20px 20px;
+}
+
+.input-field {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-left: -50px;
+}
+
+.input-field input {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  border: 1px solid #d3d3d3;
+  text-align: center;
+  font-size: 24px;
+  margin: 0 5px;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: #359cf0;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #d3d3d3;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+p {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #a9a9a9;
+}
+
+a {
+  text-decoration: none;
+  color: #359cf0;
+}
+
+@keyframes slidein {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideup {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Popup container */
+.popup-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Each popup box */
+.popup {
+  background: #ffcccc;
+  color: #900;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 280px;
+  text-align: center;
+  animation: slidein 0.3s ease-out;
+}
+
+.popup.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.popup.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Smooth Slide-Up Removal */
+.popup.slide-up {
+  animation: slideup 0.5s ease-out forwards;
+}

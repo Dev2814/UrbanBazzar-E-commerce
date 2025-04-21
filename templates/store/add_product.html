@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Add Product | UrbanBazzar{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/add_product.css' %}?v=2.2" />
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+  <div class="main-content">
+    <div class="card">
+      <h2>Add New Product</h2>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Product Info -->
+        {% for field in form %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+              <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+
+        <!-- Product Images -->
+        <div class="image-upload-section">
+          <h5>Upload Product Images</h5>
+          {{ formset.management_form }}
+          <div id="image-formset-container">
+            {% for image_form in formset %}
+              <div class="form-group image-form">
+                {{ image_form.image.label_tag }}
+                {{ image_form.image }}
+                {% if image_form.instance.pk %}
+                  <p class="text-muted">Currently:
+                    <a href="{{ image_form.instance.image.url }}">{{ image_form.instance.image.name }}</a>
+                  </p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" class="add-more" id="add-image-btn">+ Add another Product image</button>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="form-actions custom-button-row">
+          <button type="submit" class="btn update-btn">Add Product</button>
+          <a href="{% url 'store:vender_dashboard' %}" class="cancel-link">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% block extra_scripts %}
+<script src="{% static 'js/add_product.js' %}?v=2.2"></script>
+{% endblock %}
+
+{% endblock %}

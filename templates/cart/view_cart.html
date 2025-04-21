@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Cart | UrbanBazzar{% endblock %}
+
+{% block content %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/view_cart.css' %}?v=2.2" />
+{% endblock %}
+
+<div class="col-sm-12 padding-right">
+  <div class="cart-section">
+    <h2 class="title text-center">My Shopping Cart</h2>
+
+    {% if cart_items %}
+      <!-- Cart Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered custom-cart-table table-hover align-middle">
+          <thead class="table-dark text-center">
+            <tr>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Brand</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart_items %}
+              <tr>
+                <td>
+                  {% with item.product.images.first as img %}
+                    {% if img %}
+                      <img src="{{ img.image.url }}" class="img-fluid product-image" alt="{{ item.product.name }}">
+                    {% else %}
+                      <img src="{% static 'images/default_product.jpg' %}" class="img-fluid product-image" alt="{{ item.product.name }}">
+                    {% endif %}
+                  {% endwith %}
+                </td>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.product.product_category.name }}</td>
+                <td>{{ item.product.brand_name }}</td>
+                <td>₹{{ item.product.price }}</td>
+                <td>
+                  <form method="POST" action="{% url 'cart:update_cart_item' item.id %}" class="quantity-form">
+                    {% csrf_token %}
+                    <button type="submit" name="quantity" value="{{ item.quantity|add:'-1' }}" class="btn btn-outline-secondary">-</button>
+                    <input type="text" readonly value="{{ item.quantity }}" class="form-control form-control-sm w-auto text-center">
+                    <button type="submit" name="quantity" value="{{ item.quantity|add:'1' }}" class="btn btn-outline-secondary">+</button>
+                  </form>
+                </td>
+                <td>
+                  <div class="subtotal-remove-wrapper">
+                    ₹{{ item.subtotal }}
+                    <form method="POST" action="{% url 'cart:remove_cart_item' item.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="cart_quantity_delete" title="Remove">
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-right mt-4">
+        <h4>Total: ₹{{ cart_total }}</h4>
+        <button class="btn btn-primary btn-lg mt-2" data-toggle="modal" data-target="#checkoutModal">Proceed to Checkout</button>
+      </div>
+
+      <!-- Checkout Modal -->
+      <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form method="POST" action="{% url 'orders:confirm_order' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="checkoutModalLabel">Checkout</h4>
+                    </div>
+                    <div class="modal-body">
+    
+                        {% if user_addresses or user_secondary_addresses %}
+                            <div class="form-group">
+                                <label for="selected_address">Select Shipping Address</label>
+    
+                                {% if user_addresses %}
+                                    <h5>Primary Address</h5>
+                                    {% for address in user_addresses %}
+                                        <div class="form-check" onclick="document.getElementById('address{{ address.id }}').checked = true;" style="cursor: pointer;">
+                                            <input class="form-check-input" type="radio" name="selected_address" id="address{{ address.id }}" value="{{ address.id }}" required>
+                                            <label class="form-check-label" for="address{{ address.id }}">
+                                                {{ address.address }}, {{ address.city }} - {{ address.pincode }}<br>
+                                                {{ address.country }} | Phone: {{ address.mobile }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+    
+                                {% if user_secondary_addresses %}
+                                    <h5>Secondary Address</h5>
+                                    {% for address in user_secondary_addresses %}
+                                        <div class="form-check" onclick="document.getElementById('secondary_address{{ address.id }}').checked = true;" style="cursor: pointer;">
+                                            <input class="form-check-input" type="radio" name="selected_address" id="secondary_address{{ address.id }}" value="{{ address.id }}" required>
+                                            <label class="form-check-label" for="secondary_address{{ address.id }}">
+                                                {{ address.address }}, {{ address.city }} - {{ address.pincode }}<br>
+                                                {{ address.country }} | Phone: {{ address.mobile }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+    
+                        {% else %}
+                            <p class="text-danger">No address found. Please add your address before proceeding.</p>
+                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#addPrimaryAddressModal">
+                              <i class="fa fa-plus"></i> Add Address
+                          </button>
+                        {% endif %}
+    
+                        <div class="form-group mt-3">
+                            <label>Payment Method</label><br>
+                            <label class="radio-inline">
+                                <input type="radio" name="payment_method" value="COD" checked> Cash on Delivery (COD)
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="payment_method" value="UPI" id="upiRadio"> UPI
+                            </label>
+                            <input type="text" name="upi_id" id="upiInput" class="form-control" placeholder="Enter UPI ID" style="display: none; margin-top: 10px;">
+                        </div>
+    
+                        {% if show_add_address_button %}
+                            <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#addSecondaryAddressModal">
+                                <i class="fa fa-plus"></i> Add Another Address
+                            </button>
+                        {% endif %}
+    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Confirm Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>  
+
+      <!-- Primary Address Modal -->
+      <div class="modal fade" id="addPrimaryAddressModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form method="POST" action="{% url 'users:add_primary_address' %}" id="addressForm">
+              {% csrf_token %}
+              <div class="modal-header">
+                <h5 class="modal-title">Add Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="is_secondary" id="is_secondary" value="false"> <!-- Default to primary address -->
+
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                  <label for="pincode">Pincode</label>
+                  <input type="text" class="form-control" id="pincode" name="pincode" required>
+                </div>
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <input type="text" class="form-control" id="country" name="country" required>
+                </div>
+                <div class="form-group">
+                  <label for="mobile">Mobile</label>
+                  <input type="text" class="form-control" id="mobile" name="mobile" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save Address</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Address Modal -->
+      <div class="modal fade" id="addSecondaryAddressModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form method="POST" action="{% url 'users:add_secondary_address' %}" id="addressForm">
+              {% csrf_token %}
+              <div class="modal-header">
+                <h5 class="modal-title">Add Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="is_secondary" id="is_secondary" value="false"> <!-- Default to primary address -->
+
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                  <label for="pincode">Pincode</label>
+                  <input type="text" class="form-control" id="pincode" name="pincode" required>
+                </div>
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <input type="text" class="form-control" id="country" name="country" required>
+                </div>
+                <div class="form-group">
+                  <label for="mobile">Mobile</label>
+                  <input type="text" class="form-control" id="mobile" name="mobile" required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save Address</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      {% include "cart/empty_cart.html" %}
+    {% endif %}
+  </div>
+</div>
+
+{% block extra_scripts %}
+<script src="{% static 'js/view_cart.js' %}?v=2.2"></script>
+{% endblock %}
+
+{% endblock %}

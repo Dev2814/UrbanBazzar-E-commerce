@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Image Showcase</title>
+
+    <link rel="stylesheet" href="{% static 'css/Tryon.css' %}?v=2.2" />
+
+    <!-- Favicon -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{% static 'favicon_white/apple-touch-icon.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{% static 'favicon_white/favicon-32x32.png' %}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{% static 'favicon_white/favicon-16x16.png' %}"
+    />
+    <link rel="manifest" href="{% static 'favicon_white/site.webmanifest' %}" />
+    <link rel="icon" href="{% static 'favicon_white/favicon.ico' %}" />
+  </head>
+  <body>
+    <h1 class="gradient-text">Virtual Try-On</h1>
+
+    {% if error %}
+    <div class="error-box">{{ error }}</div>
+    {% endif %}
+
+    <div class="container">
+      <!-- Fetched Product Image -->
+      <div class="card">
+        <h2 class="gradient-text">Product</h2>
+        <div class="image-box">
+          {% if product.tryon_images.all %}
+          <img
+            src="{{ product.tryon_images.first.image.url }}"
+            alt="Product TryOn Image"
+          />
+          {% else %}
+          <p>No try-on image available for this product.</p>
+          {% endif %}
+        </div>
+        <input
+        type="text"
+        name="tag"
+        placeholder="Enter tag (e.g., Full_body, top_ware)"
+        class="tag-input"
+        required
+        value="{{ tag }}"
+      />
+      </div>
+
+      <!-- Upload Image -->
+      <div class="card">
+        <h2 class="gradient-text">Upload Your Image</h2>
+        <div class="image-box" id="preview-box">
+          <p>No image selected yet.</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input
+            type="file"
+            id="upload-input"
+            name="uploaded_image"
+            accept="image/*"
+            required
+          />
+          <button type="submit" class="gradient-button">Upload</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal for Generated Image -->
+    <div
+      class="modal-backdrop"
+      id="generated-modal"
+      style="{% if generated_base64 %}display: flex{% else %}display: none{% endif %}"
+    >
+      <div class="modal">
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+        <h2 class="gradient-text" >Generated Image</h2>
+        <div class="image-box" id="modal-image-box">
+          {% if generated_base64 %}
+          <img
+            src="data:image/png;base64,{{ generated_base64 }}"
+            alt="Generated Image"
+          />
+          {% else %}
+          <div id="loading-animation">
+            <p style="color: #6b7280">Generating image...</p>
+            <div class="spinner"></div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/Tryon.js' %}?v=2.2"></script>
+  </body>
+</html>

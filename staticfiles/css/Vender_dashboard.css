@@ -1,0 +1,51 @@
+.vendor-dashboard .card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+h2.title {
+  margin-right: 0;
+}
+
+.vendor-dashboard .card-header {
+  background-color: #f8f9fa;
+  font-weight: 500;
+  padding: 15px 20px;
+}
+
+.vendor-dashboard .badge {
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.vendor-dashboard .table th,
+.vendor-dashboard .table td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 12px;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.vendor-dashboard .table th {
+  background-color: #f1f1f1;
+  font-weight: 600;
+}
+
+.vendor-dashboard .no-products,
+.vendor-dashboard .no-orders {
+  font-size: 16px;
+  padding: 20px;
+  text-align: center;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .vendor-dashboard .table td,
+  .vendor-dashboard .table th {
+    font-size: 14px;
+    padding: 8px;
+  }
+}

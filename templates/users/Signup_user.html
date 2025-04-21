@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanBazzar Sign Up</title>
+
+    <!-- Linking external CSS file for styling -->
+    <link rel="stylesheet" href="{% static 'css/Signup_user.css' %}">
+
+</head>
+<body>
+        <!-- Popup Container -->
+        <div class="popup-container" id="popupContainer">
+            {% for message in messages %}
+                <div class="popup {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        
+        <div id="content" class="Signup">
+        <header>
+            <!-- Logo of UrbanBazzar -->
+            <img src="{% static 'images/UrbanBazzarWhite.png' %}" alt="UrbanBazzar Logo" class="logo">
+        </header>
+
+        <!-- Heading for Sign-Up -->
+        <h2>UrbanBazzar Signup</h2>
+
+        <!-- Google Sign-In Button -->
+        <button>
+            <img src="/static/images/google.png" class="google">Sign in with Google
+        </button>
+
+        <!-- Separator between Google sign-in and form -->
+        <span class="span">---------------or---------------</span> 
+
+        <!-- Sign-Up Form -->
+        <form id="signupForm" action="{% url "users:Signup_user" %}" method="POST">
+            {% csrf_token %}  <!-- CSRF Token for security in Django -->
+
+            <!-- Step 1: Full Name, Username, Email -->
+            <div id="step1">
+                <label for="Full Name">Full Name:</label>
+                <input type="text" name="fullname" placeholder="Full Name">
+
+                <label for="Username">Username:</label>
+                <input type="text" name="username" placeholder="Username" >
+
+                <label for="Email">Enter Your Email:</label>
+                <input type="text" id = "email" name="email" placeholder="Email Id" >
+
+                <!-- Next Button -->
+                <button type="button" class="btn" id="nextBtn">Next</button>
+            </div>
+
+            <!-- Step 2: Role, Password, Confirm Password -->
+            <div id="step2" style="display: none;">
+                <label for="role">Role:</label>
+                <select id="role" name="role">
+                    <option value="buyer">Buyer</option>
+                    <option value="vendor">Vendor</option>
+                </select>
+
+                <label for="Password">Password:</label>
+                <input type="password" name="password" placeholder="Password" >
+
+                <label for="ConfirmPassword">Confirm Password:</label>
+                <input type="password" name="confirmpassword" placeholder="Confirm Password" >
+
+                <!-- Back and Submit Buttons in One Line -->
+                <div class="button-group">
+                    <button type="button" class="btn" id="backBtn">Back</button>
+                    <button type="submit" class="btn">Sign Up</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Login Link -->
+        <p>Already have an account? <a href= {% url "users:Login_user" %}>Login</a></p>
+    </div>    
+
+    <!-- Loader Section (Currently Commented Out) -->
+    {% comment %} 
+    <div id="loader" class="loader">
+        <!-- Four loading circles animation -->
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+        <div class="circle">
+            <div class="dot"></div>
+            <div class="outline"></div>
+        </div>
+    </div> 
+    {% endcomment %}
+
+    <!-- JavaScript File (Currently Commented Out) -->
+    <script src="{% static 'js/Signup_user.js' %}"></script>
+</body>
+</html>

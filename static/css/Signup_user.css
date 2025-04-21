@@ -1,0 +1,337 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f0efef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Signup Container */
+.Signup {
+  background: #fff;
+  padding: 30px 120px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  width: 550px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+/* Logo */
+.logo {
+  width: 250px;
+  margin: 100px auto;
+  filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4));
+}
+
+/* Header Circle Icon */
+.Signup header {
+  width: 65px;
+  height: 65px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.Signup header:hover {
+  transform: scale(1.5);
+}
+
+/* Button Styling */
+.Signup button {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  border-radius: 30px;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #d3d3d3;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.Signup button:hover {
+  background-color: #d3d3d3;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Google Icon */
+.google {
+  width: 20px;
+}
+
+/* Form Input & Label */
+.Signup form input,
+.Signup form select {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #d3d3d3;
+  outline: 0;
+  padding: 12px 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+.Signup form label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: -5px;
+  display: block;
+  text-align: left;
+}
+
+.Signup form input:focus {
+  border-color: #d3d3d3;
+  box-shadow: 0 0 5px #d3d3d3;
+}
+
+/* Form Submit Button */
+.Signup form button {
+  background: #000;
+  border: 0;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.Signup form button:hover {
+  background-color: #d3d3d3;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Header & Texts */
+.Signup h2 {
+  margin: 20px 0;
+  font-size: 1.8rem;
+}
+
+.Signup p {
+  text-align: center;
+  font-size: 14px;
+  margin: 14px;
+  color: #a9a9a9;
+}
+
+.Signup a {
+  text-decoration: none;
+  color: #359cf0;
+  cursor: pointer;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.button-group .btn {
+  width: 48%;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .Signup {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .Signup h2 {
+    font-size: 1.4rem;
+    margin: 10px 0;
+  }
+
+  .Signup form input,
+  .Signup form select {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .Signup form label {
+    font-size: 0.9rem;
+  }
+
+  .Signup button {
+    font-size: 0.85rem;
+  }
+
+  .logo {
+    width: 180px;
+    margin: 40px auto;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group .btn {
+    width: 100%;
+  }
+}
+
+/* Animations for Popup */
+@keyframes slidein {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideup {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Popup */
+.popup-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.popup {
+  background: #ffcccc;
+  color: #900;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 280px;
+  text-align: center;
+  animation: slidein 0.3s ease-out;
+}
+
+.popup.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.popup.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.popup.slide-up {
+  animation: slideup 0.5s ease-out forwards;
+}
+
+
+
+/* .loader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    display: none;
+    flex-direction: row;
+}
+.loader .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: solid 2px hsl(0, 0%, 40%);
+    border-radius: 50%;
+    margin: 0 10px;
+    background-color: transparent;
+    animation: circle-keys 2s ease-in-out infinite;
+}
+.loader .circle .dot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: hsl(0, 0%, 40%);
+    animation: dot-keys 2s ease-in-out infinite;
+}
+.loader .circle .outline {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    animation: outline-keys 2s ease-in-out infinite;
+}
+.circle:nth-child(2) { animation-delay: 0.3s; }
+.circle:nth-child(3) { animation-delay: 0.6s; }
+.circle:nth-child(4) { animation-delay: 0.9s; }
+.circle:nth-child(5) { animation-delay: 1.2s; }
+.circle:nth-child(2) .dot { animation-delay: 0.3s; }
+.circle:nth-child(3) .dot { animation-delay: 0.6s; }
+.circle:nth-child(4) .dot { animation-delay: 0.9s; }
+.circle:nth-child(5) .dot { animation-delay: 1.2s; }
+.circle:nth-child(1) .outline { animation-delay: 0.9s; }
+.circle:nth-child(2) .outline { animation-delay: 1.2s; }
+.circle:nth-child(3) .outline { animation-delay: 1.5s; }
+.circle:nth-child(4) .outline { animation-delay: 1.8s; }
+.circle:nth-child(5) .outline { animation-delay: 2.1s; }
+ @keyframes circle-keys {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes dot-keys {
+    0% { transform: scale(1); }
+    50% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+@keyframes outline-keys {
+    0% { transform: scale(0); outline: solid 20px hsl(0, 5%, 47%); outline-offset: 0; opacity: 1; }
+    100% { transform: scale(1); outline: solid 0 transparent; outline-offset: 20px; opacity: 0; }
+}
+.blurred {
+    filter: blur(5px);
+    transition: filter 0.3s;
+} */

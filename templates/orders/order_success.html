@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Order | UrbanBazzar{% endblock %}
+{% block extra_head %} <link rel="stylesheet" href="{% static 'css/order_success.css' %}?v=2.2" /> {% endblock %}
+{% block content %}
+
+<div class="empty-cart-wrapper">
+  <div class="empty-cart">
+    <div class="cart-icon">✔️</div>
+    <h1>🎉 Order Successful!</h1>
+    <p>Thank you for shopping with us.</p>
+    <a href="{% url "store:product_list" %}" class="button">Start Shopping</a>
+  </div>
+</div>
+
+{% endblock %}

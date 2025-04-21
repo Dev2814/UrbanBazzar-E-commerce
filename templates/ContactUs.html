@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contact Us | UrbanBazzar{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/ContactUs.css' %}?v=1.0" />
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+  <div class="contact-content">
+    <div class="contact-card">
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <h2 class="contact-title">Contact Us</h2>
+          <p class="contact-lead">
+            We’d love to hear from you! Fill out the form below and we'll get back to you shortly.
+          </p>
+          <form method="POST" action="{% url 'Contact_us' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" class="form-control" name="name" id="name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Your Email</label>
+              <input type="email" class="form-control" name="email" id="email" required>
+            </div>
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea class="form-control" name="message" id="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Send Message</button>
+          </form>
+        </div>
+        <div class="col-md-6 contact-info">
+          <h2 class="contact-title">Get in Touch</h2>
+          <p><strong>Email:</strong> support@urbanbazzar.com</p>
+          <p><strong>Phone:</strong> +91-9876543210</p>
+          <p><strong>Address:</strong> 101, Urban Street, E-Comm City, India</p>
+          <p><strong>Working Hours:</strong> Mon - Sat | 9:00 AM - 6:00 PM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

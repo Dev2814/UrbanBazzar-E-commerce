@@ -1,0 +1,295 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to right, #f3f4f6, #e5e7eb);
+  color: #333;
+  padding: 40px;
+  transition: background 0.5s ease;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  color: #111827;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tag-input {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 15px;
+  background-color: #f1f5f9;
+  font-family: "Poppins", sans-serif;
+  margin-top: 22px;
+  text-align: center;
+}
+
+.error-box {
+  color: #fff;
+  background-color: #e74c3c;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 10px auto;
+  max-width: 90%;
+  text-align: center;
+  font-weight: 500;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #2563eb;
+  text-align: center;
+}
+
+.image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #d1d5db;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.image-box img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
+}
+
+.image-box p {
+  color: #9ca3af;
+}
+
+form {
+  margin-top: 20px;
+  text-align: center;
+}
+
+input[type="file"] {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 15px;
+  background-color: #f1f5f9;
+}
+
+button {
+  padding: 10px 25px;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+/* === Gradient Text Effect === */
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    rgba(222, 0, 75, 1) 0%,
+    rgba(191, 70, 255, 1) 49%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* === Gradient Button Variant === */
+.gradient-button {
+  background: linear-gradient(
+    90deg,
+    rgba(222, 0, 75, 1) 0%,
+    rgba(191, 70, 255, 1) 49%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.gradient-button:hover {
+  opacity: 0.9;
+}
+
+/* === MODAL BACKDROP === */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  position: relative;
+}
+
+.modal h2 {
+  color: #2563eb;
+  margin-bottom: 20px;
+}
+
+.modal .image-box {
+  height: auto;
+  border: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(from 0deg, #de004b, #bf46ff, #00d4ff, #de004b);
+  animation: spin 1s linear infinite;
+  position: relative;
+}
+
+.spinner::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 36px;
+  height: 36px;
+  background: white;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Mobile Responsive Adjustments === */
+@media (max-width: 600px) {
+  body {
+    padding: 16px;
+  }
+
+  .container {
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .image-box {
+    height: 180px;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+
+  input[type="file"],
+  .tag-input,
+  button {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .modal {
+    padding: 20px;
+    width: 95%;
+  }
+
+  .close-btn {
+    font-size: 18px;
+    top: 8px;
+    right: 12px;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+  }
+
+  .spinner::after {
+    width: 30px;
+    height: 30px;
+    top: 5px;
+    left: 5px;
+  }
+}

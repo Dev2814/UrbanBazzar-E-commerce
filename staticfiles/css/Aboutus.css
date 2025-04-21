@@ -1,0 +1,109 @@
+/* Overall Layout */
+.about-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f5f5f5;
+  min-height: 70vh;
+  margin-bottom: 30px;
+  border-radius: 12px;
+}
+
+.about-content {
+  flex: 1;
+  max-width: 900px;
+}
+
+/* Card Style */
+.about-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  margin: 2rem;
+  text-align: center;
+}
+
+/* Typography */
+.about-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 1.2rem;
+}
+
+.about-lead {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.about-subtitle {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #34495e;
+}
+
+.about-card p,
+.about-card li {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555;
+}
+
+.about-features {
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.about-features li {
+  margin-bottom: 0.6rem;
+}
+
+/* Divider */
+.about-divider {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+}
+
+.about-footer {
+  margin-top: 1.5rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .about-container {
+    padding: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .about-card {
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-lead {
+    font-size: 1.1rem;
+  }
+
+  .about-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .about-card p,
+  .about-card li {
+    font-size: 1rem;
+  }
+
+  .about-features {
+    padding-left: 1rem;
+  }
+}

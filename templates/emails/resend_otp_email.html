@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>UrbanBazzar Resend OTP</title>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px;">
+    <div style="max-width: 500px; margin: auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="color: #333;">UrbanBazzar Resend OTP</h2>
+        <p style="color: #555;">Dear User,</p>
+        <p style="color: #555;">Your new One-Time Password (OTP) has been generated. Use the OTP below to log in to your UrbanBazzar account:</p>
+        
+        <p style="font-size: 20px; font-weight: bold; color: #2c3e50;">{{ otp_code }}</p>
+        
+        <p style="color: #555;">This OTP is valid for a limited time. If you didn't request this, please ignore this email.</p>
+        
+        <p style="color: #777;"><strong>Email:</strong> {{ user_email }}</p>
+
+        <hr style="border: 0; height: 1px; background: #ddd; margin: 20px 0;">
+        
+        <p style="color: #555;">If you experience any issues, please contact our support team.</p>
+
+        <p style="color: #333; font-weight: bold;">Best Regards,</p>
+        <p style="color: #2c3e50;"><strong>UrbanBazzar Team</strong></p>
+    </div>
+</body>
+</html>

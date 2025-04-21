@@ -1,0 +1,14 @@
+
+{% load static %}
+{% block extra_head %} <link rel="stylesheet" href="{% static 'css/Empty_cart.css' %}?v=2.2" /> {% endblock %}
+{% block content %}
+
+<div class="empty-cart-wrapper">
+  <div class="empty-cart">
+    <div class="cart-icon">🛍️</div>
+    <h1>Your Cart is Empty!</h1>
+    <p>Looks like you haven’t added anything yet.</p>
+    <a href="{% url "store:product_list" %}" class="button">Start Shopping</a>
+  </div>
+</div>
+{% endblock %}

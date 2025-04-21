@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <p>Dear {{ firstname }},</p>
+
+    <p>Welcome to <b>UrbanBazzar</b>! We're excited to have you on board. 🚀</p>
+
+    <p>
+      Your account has been successfully created, and you can now explore our
+      amazing products.
+    </p>
+
+    <p><b>Need Help?</b></p>
+    <ul>
+      <li>
+        📧 Contact Support:
+        <a href="mailto:{{ support_email }}">{{ support_email }}</a>
+      </li>
+      <li>
+        📖 Visit Help Center:
+        <a href="{{ help_center_url }}">UrbanBazzar Help Center</a>
+      </li>
+    </ul>
+
+    <p>Happy Shopping!</p>
+
+    <p>
+      Best Regards,<br />
+      <b>The UrbanBazzar Team</b>
+    </p>
+  </body>
+</html>

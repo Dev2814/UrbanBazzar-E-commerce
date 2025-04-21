@@ -1,0 +1,44 @@
+.order-section .product-image {
+  max-width: 60px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.custom-order-table th,
+.custom-order-table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.order-section .card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.order-section .card-header {
+  background-color: #f8f9fa;
+  font-weight: 500;
+  padding: 15px 20px;
+}
+
+.order-section .badge {
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.order-total-row td {
+  font-weight: 600;
+  background-color: #f1f1f1;
+}
+
+.no-orders {
+  margin-top: 30px;
+  font-size: 16px;
+  padding: 20px;
+  text-align: center;
+}
+h2.title {
+  margin-right: 0;
+}
