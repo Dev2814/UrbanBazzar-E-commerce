@@ -68,11 +68,3 @@ def process_product_images():
                 print(f"✅ Updated product '{product.name}' with {len(product_urls)} image URLs.")
     
     print("✅ Image validation completed.")
-
-
-
-
-
-
-
-
