@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product,ProductImage
+from .models import Product, ProductImage
 from django.db.models import Q 
 from django.core.paginator import Paginator
 from orders.models import OrderDetails, OrderItems
@@ -10,24 +10,26 @@ from .forms import ProductForm
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 
+# View for displaying detailed product page
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
+    # Find related products with same brand or category
     related_products = Product.objects.filter(
         Q(brand_name=product.brand_name) | Q(product_category=product.product_category)
     ).exclude(id=product.id)[:48]
 
-    # Chunk the related products into groups of 4 for the carousel  
+    # Chunk related products into sets of 3 for carousel
     related_chunks = [related_products[i:i + 3] for i in range(0, len(related_products), 3)]
 
     context = {
         'product': product,
-        'related_products': related_products,  # Optional: for other use
-        'related_chunks': related_chunks,      # Used in carousel display
+        'related_products': related_products,
+        'related_chunks': related_chunks,
     }
     return render(request, 'store/product_detail.html', context)
 
-
+# View for listing products with optional search
 def product_list(request):
     query = request.GET.get('q')
     products = Product.objects.all()
@@ -39,7 +41,7 @@ def product_list(request):
         except ValueError:
             price_filter = Q()
 
-        # Apply filters
+        # Filter by name, description, brand or exact price
         products = products.filter(
             Q(name__icontains=query) | 
             Q(description__icontains=query) | 
@@ -47,51 +49,48 @@ def product_list(request):
             price_filter
         ).distinct()
 
-    products = products.order_by('-id')  # Newest first
+    products = products.order_by('-id')  # Show newest first
 
-    paginator = Paginator(products, 15)  # 15 products per page
+    paginator = Paginator(products, 15)  # Paginate with 15 products per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'store/products.html', {
         'products': page_obj,
         'page_obj': page_obj,
-        'query': query,  # To retain the search keyword in the input
+        'query': query,
     })
 
+# View for vendor dashboard
 @login_required
 def vender_dashboard(request):
     vendor = request.user
 
+    # Restrict access to vendors only
     if not vendor.role == 'vendor':
-        return redirect('store:product_list')  # Or wherever you want to redirect non-vendors
+        return redirect('store:product_list')
 
-    # Fetch vendor's products
+    # Get vendor-specific data
     products = Product.objects.filter(vendor=vendor)
-
-    # Orders containing at least one of the vendor's products
     vendor_orders = OrderDetails.objects.filter(
         orderitems__product__vendor=vendor
     ).distinct()
 
-    # Total sales only for completed orders for vendor's products
     total_sales = OrderItems.objects.filter(
         product__vendor=vendor,
         order__status='completed'
     ).aggregate(total=Sum('product__price'))['total'] or 0
 
-    # Total number of vendor's products sold
     total_products_sold = OrderItems.objects.filter(
         product__vendor=vendor
     ).aggregate(total=Sum('quantity'))['total'] or 0
 
-    # Count of completed orders with no payment for this vendor's products
     pending_payments = vendor_orders.filter(
         status='completed',
         payment__isnull=True
     ).count()
 
-    # Optional extras
+    # Optional user info
     user_address = UserAddress.objects.filter(user=vendor).first()
     user_secondary_address = UserSecondaryAddress.objects.filter(user=vendor).first()
     user_payment = UserPayment.objects.filter(user=vendor).first()
@@ -110,7 +109,7 @@ def vender_dashboard(request):
 
     return render(request, 'store/Vender_dashboard.html', context)
 
-
+# View for adding a new product
 @login_required
 def add_product(request):
     ImageFormSet = modelformset_factory(ProductImage, fields=('image',), extra=3, can_delete=True)
@@ -124,6 +123,7 @@ def add_product(request):
             product.vendor = request.user
             product.save()
 
+            # Save uploaded images
             for image_form in formset:
                 if image_form.cleaned_data:
                     image = image_form.save(commit=False)
@@ -141,7 +141,7 @@ def add_product(request):
         'formset': formset,
     })
 
-# Edit Product View
+# View for editing a product
 @login_required
 def edit_product(request, pk):
     product = get_object_or_404(Product, pk=pk, vendor=request.user)
@@ -155,7 +155,7 @@ def edit_product(request, pk):
         form = ProductForm(instance=product)
     return render(request, 'store/edit_product.html', {'form': form, 'product': product})
 
-# Delete Product View
+# View for deleting a product
 @login_required
 def delete_product(request, pk):
     product = get_object_or_404(Product, pk=pk, vendor=request.user)
@@ -163,7 +163,7 @@ def delete_product(request, pk):
     messages.success(request, 'Product deleted successfully.')
     return redirect('store:vender_dashboard')
 
-# Update Order Status View
+# View for updating order status
 @login_required
 def update_order_status(request, order_id):
     order = get_object_or_404(OrderDetails, id=order_id)
@@ -172,21 +172,19 @@ def update_order_status(request, order_id):
         new_status = request.POST.get('status')
 
         if new_status in dict(OrderDetails.STATUS_CHOICES):
-            # If status is changing to "cancelled" and it was not already cancelled
+            # If cancelled, restore stock
             if new_status == 'cancelled' and order.status != 'cancelled':
-                # Restore stock for each order item (update the vendor's stock)
-                for item in order.orderitems.all():  # Correct usage of related_name
+                for item in order.orderitems.all():
                     product = item.product
-                    product.stock += item.quantity  # Increase stock based on the quantity ordered by the user
-                    product.save()  # Save the updated product stock
+                    product.stock += item.quantity
+                    product.save()
 
-            # Update the order's status
+            # Update status
             order.status = new_status
-            order.save()  # Save the updated order status
+            order.save()
 
             messages.success(request, 'Order status updated.')
 
-        return redirect('store:vender_dashboard')  # Redirect after the update
+        return redirect('store:vender_dashboard')
 
     return render(request, 'store/update_order_status.html', {'order': order})
-

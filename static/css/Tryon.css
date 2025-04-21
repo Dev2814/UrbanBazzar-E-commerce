@@ -180,7 +180,7 @@ button:hover {
 }
 
 .modal h2 {
-  color: #2563eb;
+  color: black;
   margin-bottom: 20px;
 }
 
@@ -224,8 +224,18 @@ button:hover {
   width: 36px;
   height: 36px;
   background: white;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
 }
+
+.modal .image-box img {
+  width: 240px;
+  height: auto;
+  max-width: 100%; /* Ensures responsiveness on smaller screens */
+  border-radius: 12px;
+}
+
 
 @keyframes spin {
   0% {
@@ -292,4 +302,11 @@ button:hover {
     top: 5px;
     left: 5px;
   }
+
+  @media (max-width: 600px) {
+    #loading-animation {
+      height: 180px;
+    }
+  }
+  
 }
